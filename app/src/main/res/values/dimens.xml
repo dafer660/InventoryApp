@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="activity_margin">16dp</dimen>
+
+    <!--Text dimensions-->
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_very_small">12sp</dimen>
+
+    <!--Padding values-->
+    <dimen name="padding_left">10dp</dimen>
+    <dimen name="padding_right">10dp</dimen>
+
+    <!--Button sizes-->
+    <dimen name="btn_size">12sp</dimen>
+    <dimen name="btn_width">30dp</dimen>
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="txt_layout_width">100dp</dimen>
+    <dimen name="img_width">200dp</dimen>
+    <dimen name="img_height">200dp</dimen>
 </resources>

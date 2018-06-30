@@ -3,8 +3,7 @@
     package="com.example.danie.inventoryapp">
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/baseline_dns_black_48"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -16,6 +15,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AddInventoryActivity"
+            android:label="@string/insert_an_item"
+            android:parentActivityName=".InventoryActivity"
+            android:theme="@style/AppTheme">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AddInventoryActivity" />
+        </activity>
+
+        <provider
+            android:name=".data.InventoryProvider"
+            android:authorities="com.example.danie.inventoryapp"
+            android:exported="false" />
     </application>
 
 </manifest>

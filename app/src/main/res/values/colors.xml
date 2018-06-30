@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#303F9F</color>
+
+    <color name="fabButton">#FFFFFF</color>
+
+    <color name="emptyViewText">#A2AAB0</color>
+    <color name="colorSmallListItem">#AEB6BD</color>
+    <color name="colorMediumListItem">#2B3D4D</color>
+
 </resources>
