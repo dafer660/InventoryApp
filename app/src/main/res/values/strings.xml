@@ -1,6 +1,6 @@
 <resources>
     <!--App strings-->
-    <string name="app_name">InventoryApp</string>
+    <string name="app_name">Udacity Inventory App</string>
 
     <!--Defaults and other stuff-->
     <string name="default_quantity">0</string>
@@ -24,7 +24,7 @@
     <string name="add_item_failed">Adding an item has failed</string>
     <string name="add_item_sucess">Product added successfully</string>
     <string name="delete_item_failed">Deleting a product has failed</string>
-    <string name="delete_item_sucess">Deleting the item was sucessful</string>
+    <string name="delete_item_sucess">Deleting the item was successful</string>
     <string name="empty_view_title_text">Oops… it appears that there is no data!</string>
     <string name="empty_view_subtitle_text">Click the plus button to get you started!!</string>
 
@@ -36,11 +36,11 @@
     <string name="no_supplier_phone">A valid supplier phone must be provided</string>
 
     <!--Labels-->
-    <string name="label_product_name">Product Name</string>
-    <string name="label_product_price">Product Price</string>
-    <string name="label_product_quantity">Product Quantity</string>
-    <string name="label_supplier_name">Supplier Name</string>
-    <string name="label_supplier_telephone">Supplier Phone</string>
+    <string name="label_product_name">Product Name: </string>
+    <string name="label_product_price">Product Price: </string>
+    <string name="label_product_quantity">Product Quantity: </string>
+    <string name="label_supplier_name">Supplier Name: </string>
+    <string name="label_supplier_telephone">Supplier Phone: </string>
 
     <!--Hints-->
     <string name="hint_product_name">Product Name</string>

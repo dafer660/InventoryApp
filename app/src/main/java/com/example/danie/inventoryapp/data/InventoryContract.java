@@ -6,12 +6,12 @@ import android.provider.BaseColumns;
 
 public final class InventoryContract {
 
-    public InventoryContract() {
-    }
-
     public static final String CONTENT_AUTHORITY = "com.example.danie.inventoryapp";
     public static final String PATH_INVENTORY = "inventory";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    public InventoryContract() {
+    }
 
     public static final class InventoryEntry implements BaseColumns {
 

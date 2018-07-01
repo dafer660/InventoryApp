@@ -19,14 +19,12 @@ import android.widget.ListView;
 
 import com.example.danie.inventoryapp.data.InventoryContract.InventoryEntry;
 import com.example.danie.inventoryapp.data.InventoryCursorAdapter;
-import com.example.danie.inventoryapp.data.InventoryProvider;
 
 public class InventoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Tag for the log messages
      */
-    public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
     private static final int INVENTORY_LOADER = 0;
     private InventoryCursorAdapter mCursorAdapter;
 
@@ -95,26 +93,6 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
         return super.onOptionsItemSelected(item);
     }
 
-    // HELPER METHODS
-
-    private void insertDummyItem() {
-
-        ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "Dummy Item");
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 2);
-        values.put(InventoryEntry.COLUMN_PRODUCT_QTY, 1);
-        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Dummy Supplier");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "Dummy Phone");
-
-        Uri uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
-    }
-
-    private void deleteDummyItem() {
-        String[] arguments = {"Dummy Item"};
-        getContentResolver().delete(InventoryEntry.CONTENT_URI, InventoryEntry.COLUMN_PRODUCT_NAME + "=?",arguments);
-    }
-
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Perform SQL query
@@ -143,6 +121,25 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    // HELPER METHODS
+
+    private void insertDummyItem() {
+
+        ContentValues values = new ContentValues();
+        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "Dummy Item");
+        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 2);
+        values.put(InventoryEntry.COLUMN_PRODUCT_QTY, 1);
+        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Dummy Supplier");
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "Dummy Phone");
+
+        Uri uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+    }
+
+    private void deleteDummyItem() {
+        String[] arguments = {"Dummy Item"};
+        getContentResolver().delete(InventoryEntry.CONTENT_URI, InventoryEntry.COLUMN_PRODUCT_NAME + "=?", arguments);
     }
 
 }

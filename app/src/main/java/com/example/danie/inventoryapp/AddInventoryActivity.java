@@ -133,21 +133,6 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
             }
         });
 
-        btnDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView txtQty = findViewById(R.id.txt_product_quantity);
-                String currentQty = txtQty.getText().toString();
-                int quantity = Integer.valueOf(currentQty);
-                if (quantity > 0) {
-                    quantity--;
-                    txtQty.setText(String.valueOf(quantity));
-                }
-                Log.e(LOG_TAG, "currentQty" + currentQty);
-                Log.e(LOG_TAG, "quantity" + String.valueOf(quantity));
-            }
-        });
-
         // OnTouchListeners
         txtProductName.setOnTouchListener(mTouchListener);
         txtProductPrice.setOnTouchListener(mTouchListener);
@@ -320,10 +305,8 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         String supplierName = txtSupplierName.getText().toString().trim();
         String supplierPhone = txtSupplierPhone.getText().toString().trim();
 
-        if (mCurrentUri == null ||
-                TextUtils.isEmpty(itemName) ||
-                TextUtils.isEmpty(supplierName) ||
-                TextUtils.isEmpty(supplierPhone)) {
+        if (mCurrentUri == null &&
+                TextUtils.isEmpty(itemName)) {
             Toast.makeText(this, getString(R.string.add_item_failed), Toast.LENGTH_SHORT).show();
             return;
         }

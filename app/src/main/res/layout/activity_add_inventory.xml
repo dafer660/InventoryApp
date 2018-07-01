@@ -64,7 +64,7 @@
                 android:id="@+id/txt_product_price"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_price"
-                android:inputType="textCapWords" />
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
 
