@@ -39,6 +39,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
         TextView tvName = view.findViewById(R.id.name);
         TextView tvPrice = view.findViewById(R.id.price);
         TextView tvQuantity = view.findViewById(R.id.quantity);
+        TextView tvSupplierName = view.findViewById(R.id.supplier_name);
+        TextView tvSupplierPhone = view.findViewById(R.id.supplier_phone);
 
         final int columnId = cursor.getColumnIndexOrThrow(InventoryEntry._ID);
         final int columnItemName = cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_PRODUCT_NAME);
@@ -50,6 +52,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
         final String itemName = cursor.getString(columnItemName);
         final String itemPrice = cursor.getString(columnItemPrice);
         String itemQuantity = cursor.getString(columnItemQuantity);
+        String supplierName = cursor.getString(columnSupplierName);
+        String supplierPhone = cursor.getString(columnSupplierPhone);
 
         if (TextUtils.isEmpty(itemQuantity)) {
             itemQuantity = context.getString(R.string.default_quantity);
@@ -59,6 +63,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
         tvName.setText(itemName);
         tvPrice.setText(itemPrice);
         tvQuantity.setText(itemQuantity);
+        tvSupplierName.setText(supplierName);
+        tvSupplierPhone.setText(supplierPhone);
 
         // Define Sale button
         Button btnSale = view.findViewById(R.id.btn_sale);

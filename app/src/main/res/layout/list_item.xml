@@ -62,6 +62,46 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorSmallListItem"
+            app:fontFamily="sans-serif">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/supplier_name" />
+
+            <TextView
+                android:id="@+id/supplier_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorSmallListItem"
+            app:fontFamily="sans-serif">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/supplier_telephone" />
+
+            <TextView
+                android:id="@+id/supplier_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button

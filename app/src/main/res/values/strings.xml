@@ -7,6 +7,8 @@
     <string name="img_inventory">Inventory Image</string>
     <string name="quantity">Quantity: </string>
     <string name="price">Price: </string>
+    <string name="supplier_name">Supplier Name: </string>
+    <string name="supplier_telephone">Supplier Telephone: </string>
 
     <!--User actions-->
     <string name="add_dummy_item">Insert Dummy Item</string>
@@ -36,11 +38,11 @@
     <string name="no_supplier_phone">A valid supplier phone must be provided</string>
 
     <!--Labels-->
-    <string name="label_product_name">Product Name: </string>
-    <string name="label_product_price">Product Price: </string>
-    <string name="label_product_quantity">Product Quantity: </string>
-    <string name="label_supplier_name">Supplier Name: </string>
-    <string name="label_supplier_telephone">Supplier Phone: </string>
+    <string name="label_product_name">Product Name:</string>
+    <string name="label_product_price">Product Price:</string>
+    <string name="label_product_quantity">Product Quantity:</string>
+    <string name="label_supplier_name">Supplier Name:</string>
+    <string name="label_supplier_telephone">Supplier Phone:</string>
 
     <!--Hints-->
     <string name="hint_product_name">Product Name</string>
@@ -57,5 +59,15 @@
     <string name="update_item_failed">Failed to update Item</string>
     <string name="update_item_success">Item was updated successfully</string>
     <string name="sale">Sale</string>
+    <string name="contact_supplier">Contact Supplier</string>
+    <string name="yes">Yes</string>
+
+    <!--Error strings for validation-->
+    <string name="fill_out_the_form">Please ensure that all fields have the necessary information</string>
+    <string name="fill_out_product_name">Please fill in the Product Name</string>
+    <string name="fill_out_product_price">Please enter a valid Product Price</string>
+    <string name="fill_out_product_quantity">Please select a valid Product Quantity</string>
+    <string name="fill_out_supplier_name">Please provide a valid Supplier Name</string>
+    <string name="fill_out_telephone">Please provide a valid Supplier Telephone Number</string>
 
 </resources>

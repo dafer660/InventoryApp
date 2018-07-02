@@ -1,18 +1,22 @@
 package com.example.danie.inventoryapp;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -66,6 +70,10 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
      */
     private EditText txtSupplierPhone;
     /**
+     * Button to decrease quantity
+     */
+    private Button btnContactSupplier;
+    /**
      * Boolean flag that to check if item was updated or not (true or false, respectively)
      */
     private boolean mItemChanged = false;
@@ -112,6 +120,7 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         // Button View
         btnIncreaseQuantity = findViewById(R.id.plus_quantity);
         btnDecreaseQuantity = findViewById(R.id.minus_quantity);
+        btnContactSupplier = findViewById(R.id.btn_contact_supplier);
 
         // Test if both Views are empty or null
         if (txtProductPrice.getText().toString().isEmpty() &&
@@ -128,10 +137,39 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
                 String currentQty = txtQty.getText().toString();
                 int quantity = Integer.valueOf(currentQty) + 1;
                 txtQty.setText(String.valueOf(quantity));
-                Log.e(LOG_TAG, "currentQty" + currentQty);
                 Log.e(LOG_TAG, "quantity" + String.valueOf(quantity));
             }
         });
+
+        btnDecreaseQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView txtQty = findViewById(R.id.txt_product_quantity);
+                String currentQty = txtQty.getText().toString();
+                int quantity = Integer.valueOf(currentQty);
+
+                if (quantity > 0) {
+                    quantity -= 1;
+                }
+                txtQty.setText(String.valueOf(quantity));
+                Log.e(LOG_TAG, "quantity" + String.valueOf(quantity));
+            }
+        });
+
+        btnContactSupplier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTelephoneDialog();
+
+//                String supplierTelephone = txtSupplierPhone.getText().toString();
+//                Intent lvIntent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", supplierTelephone, null));
+//                if (ActivityCompat.checkSelfPermission(AddInventoryActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                    return;
+//                }
+//                startActivity(lvIntent);
+            }
+        });
+
 
         // OnTouchListeners
         txtProductName.setOnTouchListener(mTouchListener);
@@ -141,7 +179,6 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         txtSupplierPhone.setOnTouchListener(mTouchListener);
         btnIncreaseQuantity.setOnTouchListener(mTouchListener);
         btnDecreaseQuantity.setOnTouchListener(mTouchListener);
-
     }
 
     @Override
@@ -250,10 +287,14 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
             // Respond to a click on the "Save" menu option
             case R.id.action_insert_item:
                 // Add a Pet to the DB
-                addProduct();
+                boolean returnMsg = addProduct();
                 // Exit the activity and go back to MainActivity
-                finish();
-                return true;
+                if (returnMsg) {
+                    finish();
+                    return true;
+                } else {
+                    return true;
+                }
 
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete_item:
@@ -263,7 +304,7 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
 
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                // If the pet hasn't changed, continue with navigating up to parent activity
+                // If the item hasn't changed, continue with navigating up to parent activity
                 if (!mItemChanged) {
                     NavUtils.navigateUpFromSameTask(AddInventoryActivity.this);
                     return true;
@@ -298,61 +339,65 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         return true;
     }
 
-    private void addProduct() {
+    private boolean addProduct() {
         String itemName = txtProductName.getText().toString().trim();
         String itemPrice = txtProductPrice.getText().toString().trim();
         String itemQuantity = txtProductQuantity.getText().toString().trim();
         String supplierName = txtSupplierName.getText().toString().trim();
         String supplierPhone = txtSupplierPhone.getText().toString().trim();
 
-        if (mCurrentUri == null &&
-                TextUtils.isEmpty(itemName)) {
-            Toast.makeText(this, getString(R.string.add_item_failed), Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Log.e(LOG_TAG, String.valueOf(mCurrentUri));
 
-        double price = 0;
-        int quantity = 0;
-
-        if (!TextUtils.isEmpty(itemPrice)) {
-            price = Double.parseDouble(itemPrice);
-        }
-
-        if (!TextUtils.isEmpty(itemQuantity)) {
-            quantity = Integer.parseInt(itemQuantity);
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, itemName);
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
-        values.put(InventoryEntry.COLUMN_PRODUCT_QTY, quantity);
-        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierName);
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, supplierPhone);
-
-        if (mCurrentUri == null) {
-
-            Uri uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
-
-            if (uri != null) {
-                Toast.makeText(this, getString(R.string.add_item_sucess), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, getString(R.string.add_item_failed), Toast.LENGTH_SHORT).show();
-            }
+        if (mCurrentUri == null && validateViews()) {
+            return false;
+        } else if (mCurrentUri != null && validateViews()) {
+            return false;
         } else {
 
-            int rowsAffected = getContentResolver().update(mCurrentUri, values, null, null);
+            double price = 0;
+            int quantity = 0;
 
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.update_item_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.update_item_success),
-                        Toast.LENGTH_SHORT).show();
+            if (!TextUtils.isEmpty(itemPrice)) {
+                price = Double.parseDouble(itemPrice);
             }
 
+            if (!TextUtils.isEmpty(itemQuantity)) {
+                quantity = Integer.parseInt(itemQuantity);
+            }
+
+            ContentValues values = new ContentValues();
+            values.put(InventoryEntry.COLUMN_PRODUCT_NAME, itemName);
+            values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
+            values.put(InventoryEntry.COLUMN_PRODUCT_QTY, quantity);
+            values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierName);
+            values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, supplierPhone);
+
+            if (mCurrentUri == null) {
+
+                Uri uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+
+                if (uri != null) {
+                    Toast.makeText(this, getString(R.string.add_item_sucess), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, getString(R.string.add_item_failed), Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+
+                int rowsAffected = getContentResolver().update(mCurrentUri, values, null, null);
+
+                // Show a toast message depending on whether or not the update was successful.
+                if (rowsAffected == 0) {
+                    // If no rows were affected, then there was an error with the update.
+                    Toast.makeText(this, getString(R.string.update_item_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Otherwise, the update was successful and we can display a toast.
+                    Toast.makeText(this, getString(R.string.update_item_success),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            return true;
         }
     }
 
@@ -441,4 +486,58 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         alertDialog.show();
     }
 
+    private void showTelephoneDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final String supplierTelephone = txtSupplierPhone.getText().toString();
+        final String questionString = "Would you like to contact the Supplier to '";
+
+        builder.setMessage(questionString + supplierTelephone + "' ?");
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent lvIntent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", supplierTelephone, null));
+                if (ActivityCompat.checkSelfPermission(AddInventoryActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                startActivity(lvIntent);
+            }
+        });
+        builder.setNegativeButton(R.string.delete_item_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private boolean validateViews() {
+        // returns true if empty or non valid values in the Views
+
+        if (txtProductName.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.fill_out_product_name), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (txtProductPrice.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.fill_out_product_price), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (txtProductQuantity.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.fill_out_product_quantity), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (txtSupplierName.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.fill_out_supplier_name), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (txtSupplierPhone.getText().toString().isEmpty() &&
+                !PhoneNumberUtils.isGlobalPhoneNumber(txtSupplierPhone.getText().toString())) {
+            Toast.makeText(this, getString(R.string.fill_out_telephone), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
 }
