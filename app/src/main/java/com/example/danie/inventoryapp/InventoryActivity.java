@@ -4,18 +4,21 @@ import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.danie.inventoryapp.data.InventoryContract.InventoryEntry;
 import com.example.danie.inventoryapp.data.InventoryCursorAdapter;
@@ -85,9 +88,14 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
                 insertDummyItem();
                 return true;
 
+            // Respond to a click on the "Delete dummy data" menu option
+            case R.id.action_remove_dummy_data:
+                deleteDummyItem();
+                return true;
+
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                deleteDummyItem();
+                showDeleteConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -132,7 +140,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 2);
         values.put(InventoryEntry.COLUMN_PRODUCT_QTY, 1);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Dummy Supplier");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "Dummy Phone");
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "+12406326000");
 
         Uri uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
@@ -140,6 +148,43 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
     private void deleteDummyItem() {
         String[] arguments = {"Dummy Item"};
         getContentResolver().delete(InventoryEntry.CONTENT_URI, InventoryEntry.COLUMN_PRODUCT_NAME + "=?", arguments);
+    }
+
+    private void deleteAllProducts() {
+        int rowsDeleted = getContentResolver().delete(
+                InventoryEntry.CONTENT_URI,
+                null,
+                null);
+
+        Toast.makeText(
+                this,
+                rowsDeleted + " row(s) were deleted from " + InventoryEntry.TABLE_NAME,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_confirmation);
+        builder.setPositiveButton(R.string.delete_item, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the pet.
+                deleteAllProducts();
+            }
+        });
+        builder.setNegativeButton(R.string.delete_item_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

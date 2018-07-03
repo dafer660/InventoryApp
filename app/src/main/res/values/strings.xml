@@ -19,8 +19,10 @@
     <string name="unsaved_changes">Discard changes and quit editing?</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
-    <string name="save_item">Save Item</string>
-    <string name="delete_item">Delete Item</string>
+    <string name="save_item">Save</string>
+    <string name="delete_item">Delete</string>
+    <string name="delete_all_entries">Delete all Entries</string>
+    <string name="remove_dummy_items">Remove Dummy Items</string>
 
     <!--Notifications to the User-->
     <string name="add_item_failed">Adding an item has failed</string>
@@ -29,6 +31,7 @@
     <string name="delete_item_sucess">Deleting the item was successful</string>
     <string name="empty_view_title_text">Oops… it appears that there is no data!</string>
     <string name="empty_view_subtitle_text">Click the plus button to get you started!!</string>
+    <string name="delete_all_confirmation">You are about to delete the entire Database. Would you like to proceed?</string>
 
     <!--Error strings-->
     <string name="no_name_provided">A product name is required</string>

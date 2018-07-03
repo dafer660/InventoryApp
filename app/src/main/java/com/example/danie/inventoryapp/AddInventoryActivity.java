@@ -443,7 +443,7 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
 
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_confirmation);
         builder.setPositiveButton(R.string.delete_item, new DialogInterface.OnClickListener() {
@@ -497,7 +497,7 @@ public class AddInventoryActivity extends AppCompatActivity implements LoaderMan
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent lvIntent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", supplierTelephone, null));
+                Intent lvIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + supplierTelephone));
                 if (ActivityCompat.checkSelfPermission(AddInventoryActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }

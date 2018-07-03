@@ -12,7 +12,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_remove_dummy_data"
+        android:title="@string/remove_dummy_items"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_delete_all_entries"
-        android:title="@string/delete_items"
+        android:title="@string/delete_all_entries"
         app:showAsAction="never" />
 </menu>
